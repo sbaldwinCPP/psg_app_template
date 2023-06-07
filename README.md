@@ -1,2 +1,2 @@
 # psg_app_template
-Collection of all useful things into a simple app 'framework'
+Collection of useful things into a simple app 'framework'
