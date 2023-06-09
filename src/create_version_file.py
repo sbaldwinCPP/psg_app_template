@@ -2,7 +2,7 @@
 import os.path
 from pyinstaller_versionfile import create_versionfile
 
-from psg_app_template.front_panel import APP_VERSION
+from psg_app_template.front_panel import APP_VERSION, NAME
 
 
 # %% build path for version info file output
@@ -16,10 +16,10 @@ create_versionfile(
     output_file=filepath,
     version=APP_VERSION,
     # company_name="ACME Inc.",
-    file_description="Template App",
-    product_name="Template App",
+    file_description=NAME,
+    product_name=NAME,
     # internal_name="Simple App",
-    legal_copyright="© Scott Baldwin 2023. All rights reserved.",
+    # legal_copyright="© Scott Baldwin 2023. All rights reserved.",
     # original_filename="SimpleApp.exe",
 )
 print(f"version file created/updated: {filepath}")

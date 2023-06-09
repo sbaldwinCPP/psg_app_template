@@ -2,9 +2,9 @@
 import PySimpleGUI as sg
 
 # sg.theme("reddit")
-sg.theme("bright colors")
-NAME = "Template App"
-APP_VERSION = "0.0.0.0"
+# sg.theme("bright colors")
+NAME = "TemplateApp"
+APP_VERSION = "0.0.0.1"
 INPUT_SIZE = 10
 
 FLOATS = ["float_1", "float_2"]
