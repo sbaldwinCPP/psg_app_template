@@ -3,14 +3,23 @@ import os
 
 import PySimpleGUI as sg
 
-# custom
-from . import functions as fun
-from . import front_panel as fp
+# custom package
+try:
+    # if running from this file
+    import functions as fun
+    import front_panel as fp
+except ModuleNotFoundError:
+    # if this script has been imported elsewhere
+    from . import functions as fun
+    from . import front_panel as fp
 
 
 # %% run
 def run():
-    window = fp.make_window()
+    icon_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
+    )
+    window = fp.make_window(icon=icon_path)
     while True:
         event, values = window.read()  # type: ignore
 
@@ -29,7 +38,7 @@ def run():
 
         # info
         if event == "version":
-            fun.version_info(window)
+            fun.version_info(window, fp.APP_VERSION)
         if event == "help":
             fun.help_info(window)
         if event == "update":
@@ -48,6 +57,9 @@ def run():
         # int inputs
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
+
+        if event == "Test":
+            sg.popup(icon_path)
 
     window.close()
 

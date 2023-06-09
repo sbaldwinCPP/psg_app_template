@@ -34,7 +34,7 @@ VSVersionInfo(
         StringStruct(u'FileDescription', u'TemplateApp'),
         StringStruct(u'FileVersion', u'0.0.0.1'),
         StringStruct(u'InternalName', u''),
-        StringStruct(u'LegalCopyright', u''),
+        StringStruct(u'LegalCopyright', u'© 2023. All rights reserved.'),
         StringStruct(u'OriginalFilename', u''),
         StringStruct(u'ProductName', u'TemplateApp'),
         StringStruct(u'ProductVersion', u'0.0.0.1')])

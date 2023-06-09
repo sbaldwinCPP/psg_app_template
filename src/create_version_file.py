@@ -19,7 +19,7 @@ create_versionfile(
     file_description=NAME,
     product_name=NAME,
     # internal_name="Simple App",
-    # legal_copyright="© Scott Baldwin 2023. All rights reserved.",
+    legal_copyright="© 2023. All rights reserved.",
     # original_filename="SimpleApp.exe",
 )
 print(f"version file created/updated: {filepath}")

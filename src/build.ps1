@@ -15,7 +15,11 @@ $versionScript = ".\create_version_file.py"
 $pyInstallerExecutable = "pyinstaller"
 $launcherFile = ".\launcher.py"
 $appName = "app"
-& $pyInstallerExecutable $launcherFile --onefile -w -n $appName
+$versionFile = ".\app_version_info.txt"
+$iconFile = ".\icon.ico"
+$addIcon = ".\icon.ico;."
+
+& $pyInstallerExecutable $launcherFile --add-data $addIcon --version-file $versionFile -w -n $appName -i $iconFile 
 
 # deactivate environment
 & deactivate

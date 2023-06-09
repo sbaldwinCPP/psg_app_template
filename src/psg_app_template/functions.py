@@ -9,8 +9,11 @@ def enforce_input_type(event, values, window, type):
         window[event].update(values[event][:-1])
 
 
-def version_info(window):
-    sg.popup_scrolled(sg.get_versions(), location=window.current_location())
+def version_info(window, app_version):
+    sg.popup_scrolled(
+        f"App version: {app_version}\n" + sg.get_versions(),
+        location=window.current_location(),
+    )
 
 
 def help_info(window):
