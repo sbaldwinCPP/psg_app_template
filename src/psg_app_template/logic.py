@@ -15,7 +15,8 @@ except ModuleNotFoundError:
 
 
 # %% run
-def run():
+def run(theme=None):
+    sg.theme(theme)
     icon_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
     )
@@ -57,6 +58,11 @@ def run():
         # int inputs
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
+
+        # if event == "theme":
+        #     ### FIXME: changing theme is not working, throws error that layout is reused.
+        #     window.close()
+        #     run(values["theme"])
 
         if event == "Test":
             sg.popup(icon_path)

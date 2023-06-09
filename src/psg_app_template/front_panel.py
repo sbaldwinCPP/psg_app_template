@@ -45,8 +45,7 @@ file_browse = [
 ]
 
 
-# %% window
-def make_window(**kwargs):
+def create_layout():
     inputs = [
         file_browse,
         [sg.In("Indicator 1", disabled=True, s=INPUT_SIZE, k="indicator_1")],
@@ -82,11 +81,15 @@ def make_window(**kwargs):
         ],
         k="tab_group",
     )
-
     layout = [header, [tabs], footer]
+    return layout
+
+
+# %% window
+def make_window(**kwargs):
     window = sg.Window(
         f"{NAME} v{APP_VERSION}",
-        layout,
+        create_layout(),
         finalize=True,
         **kwargs,
     )
