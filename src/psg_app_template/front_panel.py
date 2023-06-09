@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 INPUT_SIZE = 10
 NAME = "TemplateApp"
-APP_VERSION = "0.0.0.1"
+APP_VERSION = "0.0.0.2"
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
@@ -85,7 +85,7 @@ def make_window(**kwargs):
 
     layout = [header, [tabs], footer]
     window = sg.Window(
-        f"DotPlotter v{APP_VERSION}",
+        f"{NAME} v{APP_VERSION}",
         layout,
         finalize=True,
         **kwargs,
