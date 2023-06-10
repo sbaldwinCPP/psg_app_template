@@ -1,52 +1,55 @@
 # %%
+import os
 import PySimpleGUI as sg
 
 INPUT_SIZE = 10
 NAME = "TemplateApp"
-APP_VERSION = "0.0.0.2"
+APP_VERSION = "0.0.0.3"
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
 # %% elements
-header = [[sg.T(NAME, font=("Cascadia Code", 20))]]
-
-version = sg.T(
-    f"v{APP_VERSION}",
-    k="version",
-    enable_events=True,
-    tooltip="click here for version info",
-    font=("Cascadia Code", 8),
-)
-
-update = sg.T(
-    "update",
-    enable_events=True,
-    tooltip="click here to check for updates",
-    font=("Cascadia Code", 8),
-    k="update",
-)
-
-help = sg.T(
-    "help",
-    enable_events=True,
-    tooltip="click here for instructions",
-    font=("Calibri", 8, "underline"),
-)
-
-footer = [[version, sg.VSep(), update, sg.Push(), help]]
-
-file_browse = [
-    sg.In(k="input_file", enable_events=True, visible=False),
-    sg.FileBrowse(
-        target="input_file",
-        file_types=[("Specific Input File", "*SpecificInput.xlsx"), ("All Files", "*")],
-    ),
-    sg.T("Select input file"),
-]
 
 
-# %% window
-def make_window(**kwargs):
+def create_layout():
+    header = [[sg.T(NAME, font=("Cascadia Code", 20))]]
+
+    version = sg.T(
+        f"v{APP_VERSION}",
+        k="version",
+        enable_events=True,
+        tooltip="click here for version info",
+        font=("Cascadia Code", 8),
+    )
+
+    update = sg.T(
+        "update",
+        enable_events=True,
+        tooltip="click here to check for updates",
+        font=("Cascadia Code", 8),
+        k="update",
+    )
+
+    help = sg.T(
+        "help",
+        enable_events=True,
+        tooltip="click here for instructions",
+        font=("Calibri", 8, "underline"),
+    )
+
+    footer = [[version, sg.VSep(), update, sg.Push(), help]]
+
+    file_browse = [
+        sg.In(k="input_file", enable_events=True, visible=False),
+        sg.FileBrowse(
+            target="input_file",
+            file_types=[
+                ("Specific Input File", "*SpecificInput.xlsx"),
+                ("All Files", "*"),
+            ],
+        ),
+        sg.T("Select input file"),
+    ]
     inputs = [
         file_browse,
         [sg.In("Indicator 1", disabled=True, s=INPUT_SIZE, k="indicator_1")],
@@ -66,7 +69,10 @@ def make_window(**kwargs):
     ]
 
     extras = [
-        [sg.Combo(sg.theme_list(), enable_events=True, k="theme"), sg.T("Theme")],
+        [
+            sg.Combo(sg.theme_list(), sg.theme(), enable_events=True, k="theme"),
+            sg.T("Theme"),
+        ],
         [sg.Checkbox("Dark Theme", False, enable_events=True, k="dark_theme")],
         [sg.Checkbox("Logging", False, k="logging")],
         [sg.Button("Test")],
@@ -82,12 +88,20 @@ def make_window(**kwargs):
         ],
         k="tab_group",
     )
-
     layout = [header, [tabs], footer]
+    return layout
+
+
+# %% window
+def make_window(**kwargs):
+    icon_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
+    )
     window = sg.Window(
         f"{NAME} v{APP_VERSION}",
-        layout,
+        create_layout(),
         finalize=True,
+        icon=icon_path,
         **kwargs,
     )
     window.set_min_size(window.size)
@@ -106,6 +120,11 @@ def test():
         # # basic logging
         if event not in (sg.TIMEOUT_EVENT):
             print(f"Event: {event}, Value: {values.get(event, 'N/A')}")
+
+        # if event=='Test':
+        #     d = window.AllKeysDict
+        #     print(d.keys())
+
     window.close()
 
 
