@@ -15,12 +15,9 @@ except ModuleNotFoundError:
 
 
 # %% run
-def run(theme=None):
-    sg.theme(theme)
-    icon_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
-    )
-    window = fp.make_window(icon=icon_path)
+def run():
+    sg.theme('BrightColors')
+    window = fp.make_window()
     while True:
         event, values = window.read()  # type: ignore
 
@@ -55,17 +52,18 @@ def run(theme=None):
         if event in fp.FLOATS:
             fun.enforce_input_type(event, values, window, float)
 
-        # int inputs
+        # integer inputs
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
 
-        # if event == "theme":
-        #     ### FIXME: changing theme is not working, throws error that layout is reused.
-        #     window.close()
-        #     run(values["theme"])
+        if event == "theme":
+            sg.theme(values[event])
+            location = window.current_location()
+            window.close()
+            window = fp.make_window(location=location)
 
-        if event == "Test":
-            sg.popup(icon_path)
+        # if event == "Test":
+        #     sg.popup('test')
 
     window.close()
 
