@@ -1,6 +1,11 @@
 import PySimpleGUI as sg
 
-import front_panel as fp
+try:
+    # if running from this file
+    import front_panel as fp
+except ModuleNotFoundError:
+    # if this script has been imported elsewhere
+    from . import front_panel as fp
 
 
 def enforce_input_type(event, values, window, type):
