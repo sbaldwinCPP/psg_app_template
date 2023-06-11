@@ -8,7 +8,22 @@ APP_VERSION = "0.0.0.3"
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
+
 # %% elements
+def LEDIndicator(key=None, radius=30):
+    return sg.Graph(
+        canvas_size=(radius, radius),
+        graph_bottom_left=(-radius, -radius),
+        graph_top_right=(radius, radius),
+        pad=(0, 0),
+        key=key,
+    )
+
+
+def SetLED(window, key, color):
+    graph = window[key]
+    graph.erase()
+    graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
 def create_layout():
@@ -37,7 +52,7 @@ def create_layout():
         font=("Calibri", 8, "underline"),
     )
 
-    footer = [[version, sg.VSep(), update, sg.Push(), help]]
+    footer = [[version, LEDIndicator("update_status"), update, sg.Push(), help]]
 
     file_browse = [
         sg.In(k="input_file", enable_events=True, visible=False),
@@ -104,6 +119,7 @@ def make_window(**kwargs):
         icon=icon_path,
         **kwargs,
     )
+    SetLED(window, "update_status", "grey")
     window.set_min_size(window.size)
     return window
 
@@ -121,7 +137,8 @@ def test():
         if event not in (sg.TIMEOUT_EVENT):
             print(f"Event: {event}, Value: {values.get(event, 'N/A')}")
 
-        # if event=='Test':
+        if event == "Test":
+            SetLED(window, "update_status", "lime")
         #     d = window.AllKeysDict
         #     print()
 
