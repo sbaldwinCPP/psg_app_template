@@ -1,5 +1,7 @@
 import PySimpleGUI as sg
 
+import front_panel as fp
+
 
 def enforce_input_type(event, values, window, type):
     try:
@@ -22,3 +24,17 @@ def help_info(window):
 
 def app_update(window):
     sg.popup("WIP, no updater yet :(", location=window.current_location())
+
+
+def change_theme(window, values):
+    location = window.current_location()
+    freeze = window.AllKeysDict
+    window.close()
+    window = fp.make_window(location=location)
+    for k in freeze:
+        if k not in ["Browse", "tab_group"]:
+            try:
+                window[k].update(values[k])
+            except KeyError:
+                pass
+    return window

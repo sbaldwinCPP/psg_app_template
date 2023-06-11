@@ -16,7 +16,7 @@ except ModuleNotFoundError:
 
 # %% run
 def run():
-    sg.theme('BrightColors')
+    sg.theme("BrightColors")
     window = fp.make_window()
     while True:
         event, values = window.read()  # type: ignore
@@ -56,11 +56,9 @@ def run():
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
 
-        if event == "theme":
+        if event == "theme" and values[event] != sg.theme():
             sg.theme(values[event])
-            location = window.current_location()
-            window.close()
-            window = fp.make_window(location=location)
+            window = fun.change_theme(window, values)
 
         # if event == "Test":
         #     sg.popup('test')

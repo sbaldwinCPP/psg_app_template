@@ -81,9 +81,9 @@ def create_layout():
     tabs = sg.TabGroup(
         [
             [
-                sg.Tab("Inputs", inputs),
-                sg.Tab("Settings", fig_settings),
-                sg.Tab("Extras", extras),
+                sg.Tab("Inputs", inputs, k="t1"),
+                sg.Tab("Settings", fig_settings, "t2"),
+                sg.Tab("Extras", extras, "t3"),
             ]
         ],
         k="tab_group",
@@ -123,7 +123,7 @@ def test():
 
         # if event=='Test':
         #     d = window.AllKeysDict
-        #     print(d.keys())
+        #     print()
 
     window.close()
 
