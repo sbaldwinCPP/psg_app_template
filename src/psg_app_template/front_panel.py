@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 
 INPUT_SIZE = 10
 NAME = "TemplateApp"
-APP_VERSION = "0.0.0.3"
+APP_VERSION = "0.0.0.4"
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
@@ -88,7 +88,7 @@ def create_layout():
             sg.Combo(sg.theme_list(), sg.theme(), enable_events=True, k="theme"),
             sg.T("Theme"),
         ],
-        [sg.Checkbox("Dark Theme", False, enable_events=True, k="dark_theme")],
+        [sg.Checkbox("Custom Theme", False, enable_events=True, k="enable_theme")],
         [sg.Checkbox("Logging", False, k="logging")],
         [sg.Button("Test")],
     ]
@@ -113,7 +113,7 @@ def make_window(**kwargs):
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
     )
     window = sg.Window(
-        f"{NAME} v{APP_VERSION}",
+        NAME,
         create_layout(),
         finalize=True,
         icon=icon_path,

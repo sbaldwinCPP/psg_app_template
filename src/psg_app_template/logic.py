@@ -26,6 +26,11 @@ def run():
             print("[LOG] Exit")
             break
 
+        # theme
+        if values["enable_theme"] and values["theme"] != sg.theme():
+            sg.theme(values["theme"])
+            window = fun.change_theme(window, values)
+
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
             msg = f"Event: {event}, Value: {values.get(event, 'N/A')}"
@@ -56,12 +61,8 @@ def run():
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
 
-        if event == "theme" and values[event] != sg.theme():
-            sg.theme(values[event])
-            window = fun.change_theme(window, values)
-
-        # if event == "Test":
-        #     sg.popup('test')
+        if event == "Test":
+            fp.SetLED(window, "update_status", "lime")
 
     window.close()
 

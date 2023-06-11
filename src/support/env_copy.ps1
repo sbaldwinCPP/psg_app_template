@@ -1,6 +1,10 @@
-# change directory to location of this script
+# change directory two levels up (to /src folder)
 $scriptpath = $MyInvocation.MyCommand.Path
-$dir = Split-Path $scriptpath
+# parent folder of this script
+$dir = Split-Path $scriptpath   
+Set-Location $dir  
+# up second level
+$dir = Split-Path $dir         
 Set-Location $dir
 
 # define paths
