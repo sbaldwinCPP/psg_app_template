@@ -93,18 +93,51 @@ def create_layout():
         [sg.Button("Test")],
     ]
 
+    columns = [
+        [sg.Button("Add Row")],
+        # [
+        #     sg.Push(),
+        #     sg.T("1"),
+        #     sg.Push(),
+        #     # sg.Push(),
+        #     sg.T("2"),
+        #     sg.Push(),
+        #     sg.Push(),
+        # ],
+        [
+            sg.Column(
+                [
+                    new_row(1),
+                ],
+                # s=(300, 200),
+                key="-Column-",
+                scrollable=True,
+                vertical_scroll_only=True,
+                expand_y=True,
+            ),
+        ],
+    ]
+
     tabs = sg.TabGroup(
         [
             [
-                sg.Tab("Inputs", inputs, k="t1"),
-                sg.Tab("Settings", fig_settings, "t2"),
-                sg.Tab("Extras", extras, "t3"),
+                sg.Tab("Extras", extras),
+                sg.Tab("Columns", columns),
+                sg.Tab("Inputs", inputs),
+                sg.Tab("Settings", fig_settings),
             ]
         ],
         k="tab_group",
     )
     layout = [header, [tabs], footer]
     return layout
+
+
+def new_row(i):
+    return [
+        sg.InputText(s=10, key=("-col1-", i)),
+        sg.InputText(s=10, key=("-col2-", i)),
+    ]
 
 
 # %% window
@@ -126,6 +159,7 @@ def make_window(**kwargs):
 
 # %% test
 def test():
+    i = 1
     window = make_window()
     while True:
         event, values = window.read()  # type: ignore
@@ -137,11 +171,14 @@ def test():
         if event not in (sg.TIMEOUT_EVENT):
             print(f"Event: {event}, Value: {values.get(event, 'N/A')}")
 
+        if event == "Add Row":
+            window.extend_layout(window["-Column-"], [new_row(i)])
+            window.refresh()
+            window["-Column-"].contents_changed()
+            i += 1
         if event == "Test":
             SetLED(window, "update_status", "lime")
-        #     d = window.AllKeysDict
-        #     print()
-
+            [print(k, values.get(k, None)) for k in window.AllKeysDict]
     window.close()
 
 
