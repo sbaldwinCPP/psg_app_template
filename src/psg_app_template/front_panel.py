@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 
 INPUT_SIZE = 10
 NAME = "TemplateApp"
-APP_VERSION = "0.0.0.3"
+APP_VERSION = "0.0.0.4"
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
@@ -88,17 +88,43 @@ def create_layout():
             sg.Combo(sg.theme_list(), sg.theme(), enable_events=True, k="theme"),
             sg.T("Theme"),
         ],
-        [sg.Checkbox("Dark Theme", False, enable_events=True, k="dark_theme")],
+        [sg.Checkbox("Custom Theme", False, enable_events=True, k="enable_theme")],
         [sg.Checkbox("Logging", False, k="logging")],
         [sg.Button("Test")],
+    ]
+
+    columns = [
+        [sg.Button("Add Row")],
+        # [
+        #     sg.Push(),
+        #     sg.T("1"),
+        #     sg.Push(),
+        #     # sg.Push(),
+        #     sg.T("2"),
+        #     sg.Push(),
+        #     sg.Push(),
+        # ],
+        [
+            sg.Column(
+                [
+                    new_row(1),
+                ],
+                # s=(300, 200),
+                key="-Column-",
+                scrollable=True,
+                vertical_scroll_only=True,
+                expand_y=True,
+            ),
+        ],
     ]
 
     tabs = sg.TabGroup(
         [
             [
-                sg.Tab("Inputs", inputs, k="t1"),
-                sg.Tab("Settings", fig_settings, "t2"),
-                sg.Tab("Extras", extras, "t3"),
+                sg.Tab("Extras", extras),
+                sg.Tab("Columns", columns),
+                sg.Tab("Inputs", inputs),
+                sg.Tab("Settings", fig_settings),
             ]
         ],
         k="tab_group",
@@ -107,13 +133,20 @@ def create_layout():
     return layout
 
 
+def new_row(i):
+    return [
+        sg.InputText(s=10, key=("-col1-", i)),
+        sg.InputText(s=10, key=("-col2-", i)),
+    ]
+
+
 # %% window
 def make_window(**kwargs):
     icon_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
     )
     window = sg.Window(
-        f"{NAME} v{APP_VERSION}",
+        NAME,
         create_layout(),
         finalize=True,
         icon=icon_path,
@@ -126,6 +159,7 @@ def make_window(**kwargs):
 
 # %% test
 def test():
+    i = 1
     window = make_window()
     while True:
         event, values = window.read()  # type: ignore
@@ -137,11 +171,14 @@ def test():
         if event not in (sg.TIMEOUT_EVENT):
             print(f"Event: {event}, Value: {values.get(event, 'N/A')}")
 
+        if event == "Add Row":
+            window.extend_layout(window["-Column-"], [new_row(i)])
+            window.refresh()
+            window["-Column-"].contents_changed()
+            i += 1
         if event == "Test":
             SetLED(window, "update_status", "lime")
-        #     d = window.AllKeysDict
-        #     print()
-
+            [print(k, values.get(k, None)) for k in window.AllKeysDict]
     window.close()
 
 

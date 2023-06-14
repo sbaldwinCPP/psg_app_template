@@ -40,6 +40,6 @@ def change_theme(window, values):
         if k not in ["Browse", "tab_group"]:
             try:
                 window[k].update(values[k])
-            except KeyError:
+            except:
                 pass
     return window

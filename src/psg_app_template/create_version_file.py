@@ -2,7 +2,7 @@
 import os.path
 from pyinstaller_versionfile import create_versionfile
 
-from psg_app_template.front_panel import APP_VERSION, NAME
+from front_panel import APP_VERSION, NAME
 
 
 # %% build path for version info file output

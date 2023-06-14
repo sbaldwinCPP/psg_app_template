@@ -1,3 +1,3 @@
-from psg_app_template import logic
+from psg_app_template import event_logic
 
-logic.run()
+event_logic.run()
