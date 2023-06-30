@@ -20,6 +20,7 @@ def version_info(window, app_version):
     sg.popup_scrolled(
         f"App version: {app_version}\n" + sg.get_versions(),
         location=window.current_location(),
+        title="Version Info",
     )
 
 
