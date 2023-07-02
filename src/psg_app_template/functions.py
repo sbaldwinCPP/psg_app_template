@@ -32,15 +32,18 @@ def app_update(window):
     sg.popup("WIP, no updater yet :(", location=window.current_location())
 
 
-def change_theme(window, values):
+def change_theme(window, theme="reddit", key="theme"):
+    sg.theme(theme)
     location = window.current_location()
-    freeze = window.AllKeysDict
+    # freeze = window.AllKeysDict
     window.close()
     window = fp.make_window(location=location)
-    for k in freeze:
-        if k not in ["Browse", "tab_group"]:
-            try:
-                window[k].update(values[k])
-            except:
-                pass
+    window[key].update(sg.theme())
+    # for k in freeze:
+    #     print(k, ":", values.get(k, None))
+    #     # if k not in ["Browse", "tab_group"]:
+    #     try:
+    #         window[k].update(values[k])
+    #     except KeyError:
+    #         pass
     return window

@@ -15,8 +15,8 @@ $versionScript = ".\psg_app_template\create_version_file.py"
 & $venvPath\Scripts\python.exe $versionScript
 
 # Run the pyinstaller command
-$pyInstallerExecutable = "pyinstaller"
 $launcherFile = ".\launcher.py"
+$pyInstallerExecutable = "pyinstaller"
 $appName = "app"
 $versionFile = ".\psg_app_template\app_version_info.txt"
 $iconFile = ".\icon.ico"

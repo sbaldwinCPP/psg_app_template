@@ -1,6 +1,5 @@
 # %%
 import os
-
 import PySimpleGUI as sg
 
 # custom package
@@ -28,8 +27,7 @@ def run():
 
         # theme
         if values["enable_theme"] and values["theme"] != sg.theme():
-            sg.theme(values["theme"])
-            window = fun.change_theme(window, values)
+            window = fun.change_theme(window, theme=values["theme"])
 
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
@@ -56,7 +54,6 @@ def run():
         # float inputs
         if event in fp.FLOATS:
             fun.enforce_input_type(event, values, window, float)
-
         # integer inputs
         if event in fp.INTS:
             fun.enforce_input_type(event, values, window, int)
