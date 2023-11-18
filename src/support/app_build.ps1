@@ -22,7 +22,7 @@ $versionFile = ".\psg_app_template\app_version_info.txt"
 $iconFile = ".\icon.ico"
 $addIcon = ".\icon.ico;."
 
-& $pyInstallerExecutable $launcherFile --add-data $addIcon --version-file $versionFile -w -n $appName -i $iconFile --noconfirm
+& $pyInstallerExecutable $launcherFile --add-data $addIcon --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
 
 # deactivate environment
 & deactivate
