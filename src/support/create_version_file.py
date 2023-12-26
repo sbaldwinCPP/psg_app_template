@@ -1,6 +1,8 @@
 # %% imports
-import os.path
+import os.path, sys
 from pyinstaller_versionfile import create_versionfile
+
+sys.path.append("src/app")
 
 from front_panel import APP_VERSION, NAME
 

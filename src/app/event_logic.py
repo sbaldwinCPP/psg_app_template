@@ -2,21 +2,27 @@
 import os
 import PySimpleGUI as sg
 
-# custom package
-try:
-    # if running from this file
-    import functions as fun
-    import front_panel as fp
-except ModuleNotFoundError:
-    # if this script has been imported elsewhere
-    from . import functions as fun
-    from . import front_panel as fp
+import functions as fun
+import front_panel as fp
+
+# # custom package
+# try:
+#     # if running from this file
+#     import functions as fun
+#     import app.main as fp
+# except ModuleNotFoundError:
+#     # if this script has been imported elsewhere
+#     from . import functions as fun
+#     from . import main as fp
 
 
-# %% run
-def run():
-    sg.theme("BrightColors")
-    window = fp.make_window()
+FLOATS = ["float_1", "float_2"]
+INTS = ["int_1", "int_2"]
+
+
+def run(window):
+    # sg.theme("BrightColors")
+    # window = fp.make_window()
     while True:
         event, values = window.read()  # type: ignore
 
@@ -25,9 +31,9 @@ def run():
             print("[LOG] Exit")
             break
 
-        # theme
-        if values["enable_theme"] and values["theme"] != sg.theme():
-            window = fun.change_theme(window, theme=values["theme"])
+        # # theme
+        # if values["enable_theme"] and values["theme"] != sg.theme():
+        #     window = fun.change_theme(window, theme=values["theme"])
 
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
@@ -39,7 +45,7 @@ def run():
 
         # info
         if event == "version":
-            fun.version_info(window, fp.APP_VERSION)
+            fun.version_info(window, values["version"])
         if event == "help":
             fun.help_info(window)
         if event == "update":
@@ -52,19 +58,13 @@ def run():
             window["indicator_2"].update(file_extension)
 
         # float inputs
-        if event in fp.FLOATS:
+        if event in FLOATS:
             fun.enforce_input_type(event, values, window, float)
         # integer inputs
-        if event in fp.INTS:
+        if event in INTS:
             fun.enforce_input_type(event, values, window, int)
 
         if event == "Test":
             fp.SetLED(window, "update_status", "lime")
 
     window.close()
-
-
-# %%
-
-if __name__ == "__main__":
-    run()

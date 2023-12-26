@@ -1,12 +1,9 @@
-# %%
 import os
+
 import PySimpleGUI as sg
 
+
 INPUT_SIZE = 10
-NAME = "TemplateApp"
-APP_VERSION = "0.0.0.4"
-FLOATS = ["float_1", "float_2"]
-INTS = ["int_1", "int_2"]
 
 
 # %% elements
@@ -26,11 +23,11 @@ def SetLED(window, key, color):
     graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
-def create_layout():
-    header = [[sg.T(NAME, font=("Cascadia Code", 20))]]
+def create_layout(name, version):
+    header = [[sg.T(name, font=("Cascadia Code", 20))]]
 
     version = sg.T(
-        f"v{APP_VERSION}",
+        f"v{version}",
         k="version",
         enable_events=True,
         tooltip="click here for version info",
@@ -141,13 +138,13 @@ def create_layout():
 
 
 # %% window
-def make_window(**kwargs):
+def make_window(name, version, **kwargs):
     icon_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icon.ico"
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icons", "icon.ico"
     )
     window = sg.Window(
-        NAME,
-        create_layout(),
+        name,
+        create_layout(name, version),
         finalize=True,
         icon=icon_path,
         **kwargs,
@@ -155,32 +152,3 @@ def make_window(**kwargs):
     SetLED(window, "update_status", "grey")
     window.set_min_size(window.size)
     return window
-
-
-# %% test
-def test():
-    # i = 1
-    window = make_window()
-    while True:
-        event, values = window.read()  # type: ignore
-        # exit methods
-        if event in ("Exit", sg.WIN_CLOSED):
-            print("[LOG] Exit")
-            break
-        # # basic logging
-        if event not in (sg.TIMEOUT_EVENT):
-            print(f"Event: {event}, Value: {values.get(event, 'N/A')}")
-
-        # if event == "Add Row":
-        #     window.extend_layout(window["-Column-"], [new_row(i)])
-        #     window.refresh()
-        #     window["-Column-"].contents_changed()  # type: ignore
-        #     i += 1
-        if event == "Test":
-            SetLED(window, "update_status", "lime")
-            [print(k, values.get(k, None)) for k in window.AllKeysDict]
-    window.close()
-
-
-if __name__ == "__main__":
-    test()
