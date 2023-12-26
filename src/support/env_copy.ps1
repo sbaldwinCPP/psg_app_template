@@ -1,11 +1,8 @@
-# change directory two levels up (to /src folder)
+# change directory two levels up (to /src folder from src/support/this_file path)
 $scriptpath = $MyInvocation.MyCommand.Path
-# parent folder of this script
-$dir = Split-Path $scriptpath   
-Set-Location $dir  
-# up second level
-$dir = Split-Path $dir         
-Set-Location $dir
+$dir1 = Split-Path $scriptpath   # parent folder
+$dir2 = Split-Path $dir1         # up second level
+Set-Location $dir2
 
 # define paths
 $pythonExecutable = "py"

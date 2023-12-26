@@ -7,7 +7,7 @@ import event_logic as logic
 
 
 APP_NAME = "TemplateApp"
-APP_VERSION = "0.0.0.-1"
+APP_VERSION = "0.0.0.999"
 
 
 def main():

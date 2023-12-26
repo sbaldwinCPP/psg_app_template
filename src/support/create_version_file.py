@@ -2,9 +2,12 @@
 import os.path, sys
 from pyinstaller_versionfile import create_versionfile
 
-sys.path.append("src/app")
-
-from front_panel import APP_VERSION, NAME
+try:
+    sys.path.append("src/app")
+    from main import APP_VERSION, APP_NAME
+except ModuleNotFoundError:
+    sys.path.append("app/")
+    from main import APP_VERSION, APP_NAME
 
 
 # %% build path for version info file output
@@ -18,8 +21,8 @@ create_versionfile(
     output_file=filepath,
     version=APP_VERSION,
     # company_name="ACME Inc.",
-    file_description=NAME,
-    product_name=NAME,
+    file_description=APP_NAME,
+    product_name=APP_NAME,
     # internal_name="Simple App",
     legal_copyright="© 2023. All rights reserved.",
     # original_filename="SimpleApp.exe",

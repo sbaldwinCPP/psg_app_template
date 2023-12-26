@@ -10,7 +10,7 @@ INPUT_SIZE = 10
 # %% window
 def make_window(name, version, **kwargs):
     icon_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icons", "icon.ico"
+        os.path.dirname(os.path.abspath(__file__)), "data", "icon.ico"
     )
     window = sg.Window(
         name,
