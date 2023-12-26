@@ -2,12 +2,39 @@ import os
 
 import PySimpleGUI as sg
 
+# low level module, avoid cross imports
 
 INPUT_SIZE = 10
 
 
+# %% window
+def make_window(name, version, **kwargs):
+    icon_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icons", "icon.ico"
+    )
+    window = sg.Window(
+        name,
+        create_layout(name, version),
+        finalize=True,
+        icon=icon_path,
+        **kwargs,
+    )
+    set_led(window, "update_status", "grey")
+    window.set_min_size(window.size)
+    return window
+
+
+# %%
+def update_theme(theme, window, name, version):
+    sg.theme(theme)
+    location = window.current_location()
+    window.close()
+    window = make_window(name, version, location=location)
+    return window
+
+
 # %% elements
-def LEDIndicator(key=None, radius=30):
+def led_indicator(key=None, radius=30):
     return sg.Graph(
         canvas_size=(radius, radius),
         graph_bottom_left=(-radius, -radius),
@@ -17,14 +44,14 @@ def LEDIndicator(key=None, radius=30):
     )
 
 
-def SetLED(window, key, color):
+def set_led(window, key, color):
     graph = window[key]
     graph.erase()
     graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
 def create_layout(name, version):
-    header = [[sg.T(name, font=("Cascadia Code", 20))]]
+    header = [[sg.T(name, k="name", font=("Cascadia Code", 20))]]
 
     version = sg.T(
         f"v{version}",
@@ -49,7 +76,7 @@ def create_layout(name, version):
         font=("Calibri", 8, "underline"),
     )
 
-    footer = [[version, LEDIndicator("update_status"), update, sg.Push(), help]]
+    footer = [[version, led_indicator("update_status"), update, sg.Push(), help]]
 
     file_browse = [
         sg.In(k="input_file", enable_events=True, visible=False),
@@ -90,31 +117,6 @@ def create_layout(name, version):
         [sg.Button("Test")],
     ]
 
-    # columns = [
-    #     [sg.Button("Add Row")],
-    #     # [
-    #     #     sg.Push(),
-    #     #     sg.T("1"),
-    #     #     sg.Push(),
-    #     #     # sg.Push(),
-    #     #     sg.T("2"),
-    #     #     sg.Push(),
-    #     #     sg.Push(),
-    #     # ],
-    #     [
-    #         sg.Column(
-    #             [
-    #                 new_row(1),
-    #             ],
-    #             # s=(300, 200),
-    #             key="-Column-",
-    #             scrollable=True,
-    #             vertical_scroll_only=True,
-    #             expand_y=True,
-    #         ),
-    #     ],
-    # ]
-
     tabs = sg.TabGroup(
         [
             [
@@ -130,25 +132,14 @@ def create_layout(name, version):
     return layout
 
 
-# def new_row(i):
-#     return [
-#         sg.InputText(s=10, key=("-col1-", i)),
-#         sg.InputText(s=10, key=("-col2-", i)),
-#     ]
+# %% basic event logic for quick debug
+if __name__ == "__main__":
+    sg.theme("hot dog stand")
+    window = make_window("FP Test", "99.99.99")
+    while True:
+        event, values = window.read()  # type: ignore
 
-
-# %% window
-def make_window(name, version, **kwargs):
-    icon_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icons", "icon.ico"
-    )
-    window = sg.Window(
-        name,
-        create_layout(name, version),
-        finalize=True,
-        icon=icon_path,
-        **kwargs,
-    )
-    SetLED(window, "update_status", "grey")
-    window.set_min_size(window.size)
-    return window
+        # exit methods
+        if event in ("Exit", sg.WIN_CLOSED):
+            print("[LOG] Exit")
+            break

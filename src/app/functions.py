@@ -1,11 +1,6 @@
 import PySimpleGUI as sg
 
-# try:
-#     # if running from this file
-#     import app.main as fp
-# except ModuleNotFoundError:
-#     # if this script has been imported elsewhere
-#     from . import main as fp
+# low level module, avoid cross imports
 
 
 def enforce_input_type(event, values, window, type):
@@ -30,20 +25,3 @@ def help_info(window):
 
 def app_update(window):
     sg.popup("WIP, no updater yet :(", location=window.current_location())
-
-
-# def change_theme(window, make_window, theme="reddit", key="theme", ):
-#     sg.theme(theme)
-#     location = window.current_location()
-#     # freeze = window.AllKeysDict
-#     window.close()
-#     window = make_window(location=location)
-#     window[key].update(sg.theme())  # type: ignore
-#     # for k in freeze:
-#     #     print(k, ":", values.get(k, None))
-#     #     # if k not in ["Browse", "tab_group"]:
-#     #     try:
-#     #         window[k].update(values[k])
-#     #     except KeyError:
-#     #         pass
-#     return window

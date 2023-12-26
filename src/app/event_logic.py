@@ -1,28 +1,22 @@
 # %%
+# base lib
 import os
+
+# 3rd party lib
 import PySimpleGUI as sg
 
+# custom lib (this app)
+# high level module, import low level modules
 import functions as fun
 import front_panel as fp
 
-# # custom package
-# try:
-#     # if running from this file
-#     import functions as fun
-#     import app.main as fp
-# except ModuleNotFoundError:
-#     # if this script has been imported elsewhere
-#     from . import functions as fun
-#     from . import main as fp
-
-
+# constants
 FLOATS = ["float_1", "float_2"]
 INTS = ["int_1", "int_2"]
 
 
-def run(window):
-    # sg.theme("BrightColors")
-    # window = fp.make_window()
+# %%
+def run(window, name, version):
     while True:
         event, values = window.read()  # type: ignore
 
@@ -31,9 +25,10 @@ def run(window):
             print("[LOG] Exit")
             break
 
-        # # theme
-        # if values["enable_theme"] and values["theme"] != sg.theme():
-        #     window = fun.change_theme(window, theme=values["theme"])
+        # theme
+        if values["enable_theme"] and values["theme"] != sg.theme():
+            theme = values["theme"]
+            window = fp.update_theme(theme, window, name, version)
 
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
@@ -43,9 +38,9 @@ def run(window):
             else:
                 print(msg)
 
-        # info
+        # info, usually in footer
         if event == "version":
-            fun.version_info(window, values["version"])
+            fun.version_info(window, version)
         if event == "help":
             fun.help_info(window)
         if event == "update":
@@ -65,6 +60,14 @@ def run(window):
             fun.enforce_input_type(event, values, window, int)
 
         if event == "Test":
-            fp.SetLED(window, "update_status", "lime")
+            fp.set_led(window, "update_status", "lime")
 
     window.close()
+
+
+# %%
+if __name__ == "__main__":
+    sg.theme("bright colors")
+    name, version = "Logic Test", "-1"
+    window = fp.make_window(name="Logic Test", version="-1")
+    run(window, name, version)
