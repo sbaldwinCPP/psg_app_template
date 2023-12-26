@@ -1,9 +1,8 @@
-# change directory two levels up (to /src folder)
+# change directory two levels up (to /src folder from src/support/this_file path)
 $scriptpath = $MyInvocation.MyCommand.Path
-$dir = Split-Path $scriptpath   # parent folder
-Set-Location $dir
-$dir = Split-Path $dir          # up second level
-Set-Location $dir
+$dir1 = Split-Path $scriptpath   # parent folder
+$dir2 = Split-Path $dir1         # up second level
+Set-Location $dir2
 
 # Create the Python virtual environment
 $pythonExecutable = "py"

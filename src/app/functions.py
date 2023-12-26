@@ -1,11 +1,6 @@
 import PySimpleGUI as sg
 
-try:
-    # if running from this file
-    import front_panel as fp
-except ModuleNotFoundError:
-    # if this script has been imported elsewhere
-    from . import front_panel as fp
+# low level module, avoid cross imports
 
 
 def enforce_input_type(event, values, window, type):
@@ -30,17 +25,3 @@ def help_info(window):
 
 def app_update(window):
     sg.popup("WIP, no updater yet :(", location=window.current_location())
-
-
-def change_theme(window, values):
-    location = window.current_location()
-    freeze = window.AllKeysDict
-    window.close()
-    window = fp.make_window(location=location)
-    for k in freeze:
-        if k not in ["Browse", "tab_group"]:
-            try:
-                window[k].update(values[k])
-            except:
-                pass
-    return window
