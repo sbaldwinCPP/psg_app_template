@@ -38,19 +38,13 @@ def run(window, name, version):
             else:
                 print(msg)
 
-        # info, usually in footer
+        # clickable texts in footer
         if event == "version":
             fun.version_info(window, version)
         if event == "help":
             fun.help_info(window)
         if event == "update":
             fun.app_update(window)
-
-        # file selection
-        if event == "input_file":
-            file_name, file_extension = os.path.basename(values[event]).split(".")
-            window["indicator_1"].update(file_name)
-            window["indicator_2"].update(file_extension)
 
         # float inputs
         if event in FLOATS:

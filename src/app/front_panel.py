@@ -79,22 +79,38 @@ def create_layout(name, version):
     footer = [[version, led_indicator("update_status"), update, sg.Push(), help]]
 
     file_browse = [
-        sg.In(k="input_file", enable_events=True, visible=False),
         sg.FileBrowse(
             target="input_file",
             file_types=[
-                ("Specific Input File", "*SpecificInput.xlsx"),
+                ("Specific Input File", "*SpecificInput.csv"),
                 ("All Files", "*"),
             ],
         ),
-        sg.T("Select input file"),
+        sg.In(
+            "file path",
+            k="input_file",
+            enable_events=True,
+            disabled=True,
+            s=INPUT_SIZE,
+        ),
+        sg.T("File"),
     ]
+
+    folder_browse = [
+        sg.FolderBrowse(target="folder_path"),
+        sg.In(
+            "folder path",
+            k="folder_path",
+            enable_events=True,
+            disabled=True,
+            s=INPUT_SIZE,
+        ),
+        sg.T("Folder"),
+    ]
+
     inputs = [
+        folder_browse,
         file_browse,
-        [sg.In("Indicator 1", disabled=True, s=INPUT_SIZE, k="indicator_1")],
-        [sg.In("Indicator 2", disabled=True, s=INPUT_SIZE, k="indicator_2")],
-        [sg.Checkbox("...SpecificInput.xlsx", disabled=True, k="input_bool")],
-        [sg.Checkbox("...Save_file.pkl", disabled=True, k="save_bool")],
     ]
 
     fig_settings = [
@@ -120,10 +136,9 @@ def create_layout(name, version):
     tabs = sg.TabGroup(
         [
             [
-                sg.Tab("Extras", extras),
-                # sg.Tab("Columns", columns),
                 sg.Tab("Inputs", inputs),
                 sg.Tab("Settings", fig_settings),
+                sg.Tab("Extras", extras),
             ]
         ],
         k="tab_group",
