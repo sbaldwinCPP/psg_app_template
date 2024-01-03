@@ -1,6 +1,6 @@
 # %%
 # base lib
-import os
+# import os
 
 # 3rd party lib
 import PySimpleGUI as sg
@@ -18,7 +18,12 @@ INTS = ["int_1", "int_2"]
 # %%
 def run(window, name, version):
     while True:
-        event, values = window.read()  # type: ignore
+        # get event and values
+        read = window.read()
+        if read is None:
+            raise ValueError("window.read() returned None")
+        else:
+            event, values = read
 
         # exit methods
         if event in ("Exit", sg.WIN_CLOSED):
@@ -52,7 +57,7 @@ def run(window, name, version):
         # integer inputs
         if event in INTS:
             fun.enforce_input_type(event, values, window, int)
-
+        # test button
         if event == "Test":
             fp.set_led(window, "update_status", "lime")
 
