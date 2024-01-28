@@ -19,9 +19,10 @@ $pyInstallerExecutable = "pyinstaller"
 $appName = "template_app"
 $versionFile = ".\support\app_version_info.txt"
 $iconFile = ".\app\data\icon.ico"
-$addIcon = ".\app\data\icon.ico;.\data"
+# $addIcon = ".\app\data\icon.ico;.\data"
+$addData = ".\app\data;.\data"
 
-& $pyInstallerExecutable $launcherFile --add-data $addIcon --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
+& $pyInstallerExecutable $launcherFile --add-data $addData --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
 
 # deactivate environment
 & deactivate
