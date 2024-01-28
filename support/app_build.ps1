@@ -1,4 +1,4 @@
-# change directory two levels up (to /src folder from src/support/this_file path)
+# change directory two levels up to project folder
 $scriptpath = $MyInvocation.MyCommand.Path
 $dir1 = Split-Path $scriptpath   # parent folder
 $dir2 = Split-Path $dir1         # up second level
@@ -14,13 +14,13 @@ $versionScript = ".\support\create_version_file.py"
 & $venvPath\Scripts\python.exe $versionScript
 
 # Run the pyinstaller command
-$launcherFile = ".\app\main.py"
+$launcherFile = ".\src\app\main.py"
 $pyInstallerExecutable = "pyinstaller"
 $appName = "template_app"
 $versionFile = ".\support\app_version_info.txt"
-$iconFile = ".\app\data\icon.ico"
+$iconFile = ".\src\app\data\icon.ico"
 # $addIcon = ".\app\data\icon.ico;.\data"
-$addData = ".\app\data;.\data"
+$addData = ".\src\app\data;.\data"
 
 & $pyInstallerExecutable $launcherFile --add-data $addData --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
 
