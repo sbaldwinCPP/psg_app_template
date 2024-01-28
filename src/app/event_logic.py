@@ -27,7 +27,7 @@ def run(window, name, version):
 
         # exit methods
         if event in ("Exit", sg.WIN_CLOSED):
-            print("[LOG] Exit")
+            print("Exit")
             break
 
         # theme

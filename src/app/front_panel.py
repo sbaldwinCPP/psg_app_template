@@ -149,12 +149,13 @@ def create_layout(name, version):
 
 # %% basic event logic for quick debug
 if __name__ == "__main__":
-    sg.theme("hot dog stand")
+    # sg.theme("hot dog stand")
+    sg.theme("bright colors")
     window = make_window("FP Test", "99.99.99")
     while True:
         event, values = window.read()  # type: ignore
 
         # exit methods
         if event in ("Exit", sg.WIN_CLOSED):
-            print("[LOG] Exit")
+            print("Exit")
             break
