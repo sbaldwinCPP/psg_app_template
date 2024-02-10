@@ -1,6 +1,4 @@
 # %%
-# base lib
-# import os
 
 # 3rd party lib
 import PySimpleGUI as sg
