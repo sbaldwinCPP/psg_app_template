@@ -19,10 +19,11 @@ $pyInstallerExecutable = "pyinstaller"
 $appName = "template_app"
 $versionFile = ".\support\app_version_info.txt"
 $iconFile = ".\src\app\data\icon.ico"
-# $addIcon = ".\app\data\icon.ico;.\data"
-$addData = ".\src\app\data;.\data"
+# $addIcon = ".\app\data\icon.ico;.\data" # use this to add specific file
+$addDataFolder = ".\src\app\data;.\data" # use this to add entire folder
 
-& $pyInstallerExecutable $launcherFile --add-data $addData --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
+# build command with settings args
+& $pyInstallerExecutable $launcherFile --add-data $addDataFolder --version-file $versionFile -w -n $appName -i $iconFile --noconfirm --onefile
 
 # deactivate environment
 & deactivate
