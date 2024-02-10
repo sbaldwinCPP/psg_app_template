@@ -19,7 +19,7 @@ def make_window(name, version, **kwargs):
         icon=icon_path,
         **kwargs,
     )
-    set_led(window, "update_status", "grey")
+    set_led(window, "status_LED", "grey")
     window.set_min_size(window.size)
     return window
 
@@ -61,12 +61,12 @@ def create_layout(name, version):
         font=("Cascadia Code", 8),
     )
 
-    update = sg.T(
-        "update",
-        enable_events=True,
-        tooltip="click here to check for updates",
+    status = sg.T(
+        "status",
+        # enable_events=True,
+        tooltip="Status: None",
         font=("Cascadia Code", 8),
-        k="update",
+        k="status",
     )
 
     help = sg.T(
@@ -76,7 +76,7 @@ def create_layout(name, version):
         font=("Calibri", 8, "underline"),
     )
 
-    footer = [[version, led_indicator("update_status"), update, sg.Push(), help]]
+    footer = [[version, led_indicator("status_LED"), status, sg.Push(), help]]
 
     file_browse = [
         sg.FileBrowse(

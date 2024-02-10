@@ -48,8 +48,6 @@ def run(window, name, version):
             fun.version_info(window, version)
         if event == "help":
             fun.help_info(window)
-        if event == "update":
-            fun.app_update(window)
 
         # float inputs
         if event in FLOATS:
@@ -59,8 +57,8 @@ def run(window, name, version):
             fun.enforce_input_type(event, values, window, int)
         # test button
         if event == "Test":
-            window[event].set_tooltip("updated tooltip!")
-            # fp.set_led(window, "update_status", "lime")
+            window["status"].set_tooltip("updated tooltip!")
+            fp.set_led(window, "status_LED", "lime")
 
     window.close()
 

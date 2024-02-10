@@ -22,7 +22,3 @@ def version_info(window, app_version):
 
 def help_info(window):
     sg.popup("WIP, no instructions yet :(", location=window.current_location())
-
-
-def app_update(window):
-    sg.popup("WIP, no updater yet :(", location=window.current_location())
