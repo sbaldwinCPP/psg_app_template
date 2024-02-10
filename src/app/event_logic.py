@@ -10,9 +10,9 @@ import PySimpleGUI as sg
 import functions as fun
 import front_panel as fp
 
-# constants
-FLOATS = ["float_1", "float_2"]
-INTS = ["int_1", "int_2"]
+# list of element keys with specific types to enforce
+FLOATS = ["float", "float_2"]
+INTS = ["int", "int_2"]
 
 
 # %%
@@ -59,7 +59,8 @@ def run(window, name, version):
             fun.enforce_input_type(event, values, window, int)
         # test button
         if event == "Test":
-            fp.set_led(window, "update_status", "lime")
+            window[event].set_tooltip("updated tooltip!")
+            # fp.set_led(window, "update_status", "lime")
 
     window.close()
 

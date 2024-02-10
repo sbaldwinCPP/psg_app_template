@@ -80,6 +80,7 @@ def create_layout(name, version):
 
     file_browse = [
         sg.FileBrowse(
+            button_text="...",
             target="input_file",
             file_types=[
                 ("Specific Input File", "*SpecificInput.csv"),
@@ -97,7 +98,7 @@ def create_layout(name, version):
     ]
 
     folder_browse = [
-        sg.FolderBrowse(target="folder_path"),
+        sg.FolderBrowse(button_text="...", target="folder_path"),
         sg.In(
             "folder path",
             k="folder_path",
@@ -113,13 +114,16 @@ def create_layout(name, version):
         file_browse,
     ]
 
-    fig_settings = [
-        [sg.In("1.0", enable_events=True, k="float_1", s=INPUT_SIZE), sg.T("float 1")],
-        [sg.In("0.2", enable_events=True, k="float_2", s=INPUT_SIZE), sg.T("float 2")],
-        [sg.In("-91", enable_events=True, k="int_1", s=INPUT_SIZE), sg.T("int 1")],
-        [sg.In("57", enable_events=True, k="int_2", s=INPUT_SIZE), sg.T("int 2")],
-        [sg.Combo([1, 2, 3], k="combo_1", s=INPUT_SIZE), sg.T("Combo 1")],
-        [sg.Combo(["a", "b", "c"], k="combo_2", s=INPUT_SIZE), sg.T("Combo 2")],
+    settings = [
+        [sg.In("1.0", enable_events=True, k="float", s=INPUT_SIZE), sg.T("float")],
+        [sg.In("-91", enable_events=True, k="int", s=INPUT_SIZE), sg.T("int")],
+        [
+            sg.Combo(
+                [1, 2, 3, "a", "b", "c"], k="combo", s=INPUT_SIZE, enable_events=True
+            ),
+            sg.T("combo"),
+        ],
+        [sg.Checkbox("checkbox", key="checkbox")],
         [sg.Button("GO", key="go", s=INPUT_SIZE, tooltip="this is a tooltip")],
     ]
 
@@ -137,7 +141,7 @@ def create_layout(name, version):
         [
             [
                 sg.Tab("Inputs", inputs),
-                sg.Tab("Settings", fig_settings),
+                sg.Tab("Settings", settings),
                 sg.Tab("Extras", extras),
             ]
         ],
@@ -147,7 +151,7 @@ def create_layout(name, version):
     return layout
 
 
-# %% basic event logic for quick debug
+# %% basic event logic for quick test/debug
 if __name__ == "__main__":
     # sg.theme("hot dog stand")
     sg.theme("bright colors")

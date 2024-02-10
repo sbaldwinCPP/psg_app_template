@@ -8,6 +8,7 @@ def enforce_input_type(event, values, window, type):
         type(values[event])
         window[event].update(values[event].strip())
     except ValueError:
+        print(f"Input must be compatible with type: {type}")
         window[event].update(values[event][:-1])
 
 
