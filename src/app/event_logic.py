@@ -30,8 +30,7 @@ def run(window, name, version):
 
         # theme
         if values["enable_theme"] and values["theme"] != sg.theme():
-            theme = values["theme"]
-            window = fp.update_theme(theme, window, name, version)
+            window = fp.update_theme(values, window, name, version)
 
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
@@ -53,10 +52,14 @@ def run(window, name, version):
         # integer inputs
         if event in INTS:
             fun.enforce_input_type(event, values, window, int)
-        # test button
+        # test buttons
         if event == "Test":
             window["status"].set_tooltip("updated tooltip!")
             fp.set_led(window, "status_LED", "lime")
+        if event == "Values":
+            [print(f"key: {k}, value: {v}") for k, v in values.items()]
+        if event == "Elements":
+            [print(f"key: {k} , element: {v}") for k, v in window.AllKeysDict.items()]
 
     window.close()
 

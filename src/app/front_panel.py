@@ -28,11 +28,26 @@ def make_window(name, version, **kwargs):
 
 
 # %%
-def update_theme(theme, window, name, version):
+def update_theme(values, window, name, version):
+    theme = values["theme"]
     sg.theme(theme)
     location = window.current_location()
     window.close()
     window = make_window(name, version, location=location)
+    # update values to what they were before
+    for k, v in values.items():
+        if any(
+            [
+                isinstance(window[k], sg.Checkbox),
+                isinstance(window[k], sg.Input),
+                isinstance(window[k], sg.Combo),
+            ]
+        ):
+            window[k].update(v)
+
+    window["Extras"].select()  # type: ignore
+    window["theme"].SetFocus()
+
     return window
 
 
@@ -79,7 +94,7 @@ def create_layout(name, version):
         font=("Calibri", 8, "underline"),
     )
 
-    footer = [[version, led_indicator("status_LED"), status, sg.Push(), help]]
+    footer = [[led_indicator("status_LED"), status, sg.Push(), version, help]]
 
     file_browse = [
         sg.FileBrowse(
@@ -122,7 +137,10 @@ def create_layout(name, version):
         [sg.In("-91", enable_events=True, k="int", s=INPUT_SIZE), sg.T("int")],
         [
             sg.Combo(
-                [1, 2, 3, "a", "b", "c"], k="combo", s=INPUT_SIZE, enable_events=True
+                [1, 2, 3, "a", "b", "c"],
+                k="combo",
+                s=INPUT_SIZE,
+                enable_events=True,
             ),
             sg.T("combo"),
         ],
@@ -137,7 +155,7 @@ def create_layout(name, version):
         ],
         [sg.Checkbox("Custom Theme", False, enable_events=True, k="enable_theme")],
         [sg.Checkbox("Logging", False, k="logging")],
-        [sg.Button("Test")],
+        [sg.Button("Test"), sg.Button("Values"), sg.Button("Elements")],
     ]
 
     tabs = sg.TabGroup(
