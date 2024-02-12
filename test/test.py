@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("./src/app")
+sys.path.append("./src")
 import main
 
 main.main()

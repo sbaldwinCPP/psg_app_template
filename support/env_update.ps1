@@ -6,7 +6,7 @@ Set-Location $dir2
 
 # Create the Python virtual environment
 $pythonExecutable = "py"
-$venvPath = ".\env-app"
+$venvPath = ".\env"
 & $pythonExecutable -m venv $venvPath
 
 # Activate the virtual environment

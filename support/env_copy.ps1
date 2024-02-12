@@ -6,7 +6,7 @@ Set-Location $dir2
 
 # define paths
 $pythonExecutable = "py"
-$venvPath = ".\env-app"
+$venvPath = ".\env"
 $requirementsFile = ".\requirements.txt"
 
 # Create the Python virtual environment

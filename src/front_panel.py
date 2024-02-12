@@ -36,13 +36,8 @@ def update_theme(values, window, name, version):
     window = make_window(name, version, location=location)
     # update values to what they were before
     for k, v in values.items():
-        if any(
-            [
-                isinstance(window[k], sg.Checkbox),
-                isinstance(window[k], sg.Input),
-                isinstance(window[k], sg.Combo),
-            ]
-        ):
+        # only try to update element types that can & should be updated
+        if isinstance(window[k], (sg.Checkbox, sg.Input, sg.Combo)):
             window[k].update(v)
 
     window["Extras"].select()  # type: ignore
