@@ -2,12 +2,8 @@
 import os.path, sys
 from pyinstaller_versionfile import create_versionfile
 
-try:
-    sys.path.append("src/app")
-    from main import APP_VERSION, APP_NAME
-except ModuleNotFoundError:
-    sys.path.append("app/")
-    from main import APP_VERSION, APP_NAME
+sys.path.append("./src")
+from main import APP_VERSION, APP_NAME
 
 
 # %% build path for version info file output

@@ -1,7 +1,9 @@
+# highest level module, entry point for build scripts
+
+# 3rd party
 import PySimpleGUI as sg
 
-# highest level module, entry point for build scripts
-# import high/low level modules
+# custom/local
 import front_panel as fp
 import event_logic as logic
 

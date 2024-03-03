@@ -1,6 +1,4 @@
 # %%
-# base lib
-import os
 
 # 3rd party lib
 import PySimpleGUI as sg
@@ -10,25 +8,29 @@ import PySimpleGUI as sg
 import functions as fun
 import front_panel as fp
 
-# constants
-FLOATS = ["float_1", "float_2"]
-INTS = ["int_1", "int_2"]
+# list of element keys with specific types to enforce
+FLOATS = ["float", "float_2"]
+INTS = ["int", "int_2"]
 
 
 # %%
 def run(window, name, version):
     while True:
-        event, values = window.read()  # type: ignore
+        # get event and values
+        read = window.read()
+        if read is None:
+            raise ValueError("window.read() returned None")
+        else:
+            event, values = read
 
         # exit methods
         if event in ("Exit", sg.WIN_CLOSED):
-            print("[LOG] Exit")
+            print("Exit")
             break
 
         # theme
         if values["enable_theme"] and values["theme"] != sg.theme():
-            theme = values["theme"]
-            window = fp.update_theme(theme, window, name, version)
+            window = fp.update_theme(values, window, name, version)
 
         # basic logging
         if event not in (sg.TIMEOUT_EVENT):
@@ -38,19 +40,11 @@ def run(window, name, version):
             else:
                 print(msg)
 
-        # info, usually in footer
+        # clickable texts in footer
         if event == "version":
             fun.version_info(window, version)
         if event == "help":
             fun.help_info(window)
-        if event == "update":
-            fun.app_update(window)
-
-        # file selection
-        if event == "input_file":
-            file_name, file_extension = os.path.basename(values[event]).split(".")
-            window["indicator_1"].update(file_name)
-            window["indicator_2"].update(file_extension)
 
         # float inputs
         if event in FLOATS:
@@ -58,9 +52,14 @@ def run(window, name, version):
         # integer inputs
         if event in INTS:
             fun.enforce_input_type(event, values, window, int)
-
+        # test buttons
         if event == "Test":
-            fp.set_led(window, "update_status", "lime")
+            window["status"].set_tooltip("updated tooltip!")
+            fp.set_led(window, "status_LED", "lime")
+        if event == "Values":
+            [print(f"key: {k}, value: {v}") for k, v in values.items()]
+        if event == "Elements":
+            [print(f"key: {k} , element: {v}") for k, v in window.AllKeysDict.items()]
 
     window.close()
 

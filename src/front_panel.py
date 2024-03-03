@@ -1,5 +1,8 @@
+# %%
+# base lib
 import os
 
+# 3rd party lib
 import PySimpleGUI as sg
 
 # low level module, avoid cross imports
@@ -19,17 +22,27 @@ def make_window(name, version, **kwargs):
         icon=icon_path,
         **kwargs,
     )
-    set_led(window, "update_status", "grey")
+    set_led(window, "status_LED", "grey")
     window.set_min_size(window.size)
     return window
 
 
 # %%
-def update_theme(theme, window, name, version):
+def update_theme(values, window, name, version):
+    theme = values["theme"]
     sg.theme(theme)
     location = window.current_location()
     window.close()
     window = make_window(name, version, location=location)
+    # update values to what they were before
+    for k, v in values.items():
+        # only try to update element types that can & should be updated
+        if isinstance(window[k], (sg.Checkbox, sg.Input, sg.Combo)):
+            window[k].update(v)
+
+    window["Extras"].select()  # type: ignore
+    window["theme"].SetFocus()
+
     return window
 
 
@@ -61,12 +74,12 @@ def create_layout(name, version):
         font=("Cascadia Code", 8),
     )
 
-    update = sg.T(
-        "update",
-        enable_events=True,
-        tooltip="click here to check for updates",
+    status = sg.T(
+        "status",
+        # enable_events=True,
+        tooltip="Status: None",
         font=("Cascadia Code", 8),
-        k="update",
+        k="status",
     )
 
     help = sg.T(
@@ -76,34 +89,57 @@ def create_layout(name, version):
         font=("Calibri", 8, "underline"),
     )
 
-    footer = [[version, led_indicator("update_status"), update, sg.Push(), help]]
+    footer = [[led_indicator("status_LED"), status, sg.Push(), version, help]]
 
     file_browse = [
-        sg.In(k="input_file", enable_events=True, visible=False),
         sg.FileBrowse(
+            button_text="...",
             target="input_file",
             file_types=[
-                ("Specific Input File", "*SpecificInput.xlsx"),
+                ("Specific Input File", "*SpecificInput.csv"),
                 ("All Files", "*"),
             ],
         ),
-        sg.T("Select input file"),
-    ]
-    inputs = [
-        file_browse,
-        [sg.In("Indicator 1", disabled=True, s=INPUT_SIZE, k="indicator_1")],
-        [sg.In("Indicator 2", disabled=True, s=INPUT_SIZE, k="indicator_2")],
-        [sg.Checkbox("...SpecificInput.xlsx", disabled=True, k="input_bool")],
-        [sg.Checkbox("...Save_file.pkl", disabled=True, k="save_bool")],
+        sg.In(
+            "file path",
+            k="input_file",
+            enable_events=True,
+            disabled=True,
+            s=INPUT_SIZE,
+        ),
+        sg.T("File"),
     ]
 
-    fig_settings = [
-        [sg.In("1.0", enable_events=True, k="float_1", s=INPUT_SIZE), sg.T("float 1")],
-        [sg.In("0.2", enable_events=True, k="float_2", s=INPUT_SIZE), sg.T("float 2")],
-        [sg.In("-91", enable_events=True, k="int_1", s=INPUT_SIZE), sg.T("int 1")],
-        [sg.In("57", enable_events=True, k="int_2", s=INPUT_SIZE), sg.T("int 2")],
-        [sg.Combo([1, 2, 3], k="combo_1", s=INPUT_SIZE), sg.T("Combo 1")],
-        [sg.Combo(["a", "b", "c"], k="combo_2", s=INPUT_SIZE), sg.T("Combo 2")],
+    folder_browse = [
+        sg.FolderBrowse(button_text="...", target="folder_path"),
+        sg.In(
+            "folder path",
+            k="folder_path",
+            enable_events=True,
+            disabled=True,
+            s=INPUT_SIZE,
+        ),
+        sg.T("Folder"),
+    ]
+
+    inputs = [
+        folder_browse,
+        file_browse,
+    ]
+
+    settings = [
+        [sg.In("1.0", enable_events=True, k="float", s=INPUT_SIZE), sg.T("float")],
+        [sg.In("-91", enable_events=True, k="int", s=INPUT_SIZE), sg.T("int")],
+        [
+            sg.Combo(
+                [1, 2, 3, "a", "b", "c"],
+                k="combo",
+                s=INPUT_SIZE,
+                enable_events=True,
+            ),
+            sg.T("combo"),
+        ],
+        [sg.Checkbox("checkbox", key="checkbox")],
         [sg.Button("GO", key="go", s=INPUT_SIZE, tooltip="this is a tooltip")],
     ]
 
@@ -114,16 +150,15 @@ def create_layout(name, version):
         ],
         [sg.Checkbox("Custom Theme", False, enable_events=True, k="enable_theme")],
         [sg.Checkbox("Logging", False, k="logging")],
-        [sg.Button("Test")],
+        [sg.Button("Test"), sg.Button("Values"), sg.Button("Elements")],
     ]
 
     tabs = sg.TabGroup(
         [
             [
-                sg.Tab("Extras", extras),
-                # sg.Tab("Columns", columns),
                 sg.Tab("Inputs", inputs),
-                sg.Tab("Settings", fig_settings),
+                sg.Tab("Settings", settings),
+                sg.Tab("Extras", extras),
             ]
         ],
         k="tab_group",
@@ -132,14 +167,15 @@ def create_layout(name, version):
     return layout
 
 
-# %% basic event logic for quick debug
+# %% basic event logic for quick test/debug
 if __name__ == "__main__":
-    sg.theme("hot dog stand")
+    # sg.theme("hot dog stand")
+    sg.theme("bright colors")
     window = make_window("FP Test", "99.99.99")
     while True:
         event, values = window.read()  # type: ignore
 
         # exit methods
         if event in ("Exit", sg.WIN_CLOSED):
-            print("[LOG] Exit")
+            print("Exit")
             break
