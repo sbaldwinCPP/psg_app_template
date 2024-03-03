@@ -1,3 +1,6 @@
+pysimplegui has gone to a subscription model as of version 5. 
+work on this template will be stopped.
+
 # psg_app_template
 <img src="icon.png" alt="icon" width="100"/>
 
